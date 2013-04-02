@@ -1,0 +1,77 @@
+#!/usr/bin/php
+<?php
+date_default_timezone_set('America/Denver');
+echo "check-for-github-changes script started at " . date("F j, Y, g:i a") . "\n";
+
+//Special thanks to http://vertstudios.com/blog/github-api-latest-commit-details-php/
+// They gave me these functions so I wouldn't have to take the time to write them myself
+
+/**
+ * Given the github API url, curl makes the request,
+ *   and then returns the response data to the caller
+ */
+function get_json($url){
+  $base = "https://api.bitbucket.org/1.0/";
+  $curl = curl_init();
+  curl_setopt($curl, CURLOPT_URL, $base . $url);
+  curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+  curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+  curl_setopt($curl, CURLOPT_USERPWD, "dsw88:timefiddle");
+
+  $content = curl_exec($curl);
+  curl_close($curl);
+  return $content;
+}
+
+/**
+ * Given the username and repository name, gets the commit
+ *  records for that repository
+ */ 
+function get_commits($repo, $user){
+  // Get the name of the repo that we'll use in the request url
+  return json_decode(get_json("repositories/$user/$repo/branches"),true);
+}
+
+$branches = get_commits("timefiddleweb", "dsw88");
+$master = $branches['master'];
+$commitSHA = $master['raw_node'];
+$committerEmail = $master["raw_author"];
+$newCommitHappened = false;
+
+//We rely on the last-commit file to tell when we should re-build everything
+//-If that file's deleted, it won't destroy everything, it just means we'll
+//  do a re-build when we don't have to
+$lastCommitFile = "/home/ec2-user/continuous-integration/last-commit";
+if(file_exists($lastCommitFile)){
+  $lastCommitFileContents = file_get_contents($lastCommitFile);
+  $lastCommitJSON = json_decode($lastCommitFileContents, true);
+
+  if($lastCommitJSON['sha'] != $commitSHA){
+    $newCommitHappened = true;
+  }
+}
+else{
+  $newCommitHappened = true;
+}
+
+//If we've got a new commit, then put the new information in the last-commit file
+if($newCommitHappened){
+  echo "New commit happened: \n  SHA: $commitSHA\n  Committer Email: $committerEmail\n";
+
+  $newCommitHappenedFileContents = array(
+    "sha" => $commitSHA,
+    "committerEmail" => $committerEmail
+  );
+  file_put_contents($lastCommitFile, json_encode($newCommitHappenedFileContents));
+
+  $CIScriptOutput = `/home/ec2-user/continuous-integration/ci-scripts/continuous-integration`;
+  echo "**********CI SCRIPT OUTPUT *********\n";
+  echo $CIScriptOutput . "\n\n";
+}
+else{
+  echo "No new commit happened\n";
+}
+
+echo "check-for-github-changes script ended at " . date("F j, Y, g:i a") . "\n\n";
+
+?>
