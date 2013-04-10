@@ -18,7 +18,7 @@ class Users extends CI_Controller {
             redirect(site_url('dashboard/main'), 'location');
         }
         else{
-            redirect(site_url('home/login?error=baduser'), 'location');
+            redirect(site_url('main/login?error=baduser'), 'location');
         }
 	}
 
