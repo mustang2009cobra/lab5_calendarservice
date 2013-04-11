@@ -62,7 +62,7 @@ if(!$user){
         if(error == "true"){
             showErrorAlert("Unknown Error");
         }
-        else{
+        else if(error == "false"){
             showSuccessAlert("Success!")
         }
     });

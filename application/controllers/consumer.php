@@ -52,6 +52,10 @@ class Consumer extends CI_Controller {
         $user->googleExpiresIn = $expires_in;
         $this->session->set_userdata('user', $user);
 
+        var_dump($user);
+        var_dump($this->session->userdata('user'));
+        die();
+
         redirect(site_Url("dashboard/main?error=false"), 'location');
 	}
 
