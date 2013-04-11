@@ -49,9 +49,9 @@ $active_group = 'default';
 $active_record = TRUE;
 
 $db['default']['hostname'] = 'localhost';
-$db['default']['username'] = 'root';
-$db['default']['password'] = '';
-$db['default']['database'] = 'calendar_service';
+$db['default']['username'] = 'dsw88_calendar';
+$db['default']['password'] = 'calendardude';
+$db['default']['database'] = 'dsw88_calendarservice';
 $db['default']['dbdriver'] = 'mysql';
 $db['default']['dbprefix'] = '';
 $db['default']['pconnect'] = TRUE;
