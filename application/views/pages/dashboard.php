@@ -50,7 +50,7 @@ if(!$user){
 		<div class="span8">
             <p>Test Content - More to come later</p>
             <p>Test Commit Line</p>
-            <?php renderGoogleAPIAuthSection(); ?>
+            <?php renderGoogleAPIAuthSection($user); ?>
 		</div>
 		<div class="span2"></div>
 	</div>
@@ -87,7 +87,7 @@ if(!$user){
 <?php
 //PAGE HELPER FUNCTIONS
 
-function renderGoogleAPIAuthSection(){
+function renderGoogleAPIAuthSection($user){
     if(isset($user->googleAccessToken)){
         echo "<p>You're connected to Google Calendar!</p>";
     }
