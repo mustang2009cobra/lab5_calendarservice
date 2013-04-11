@@ -45,7 +45,12 @@ class Users extends CI_Controller {
 
 	public function connect_to_google_calendar(){
 		$calendarURL = "https://accounts.google.com/o/oauth2/auth";
-		redirect($calendarURL, 'location');
+		$calendarURL .= "?response_type=code";
+		$calendarURL .= "&client_id=128117557776.apps.googleusercontent.com";
+		$calendarURL .= "&redirect_uri=http://ec2-54-225-94-113.compute-1.amazonaws.com/lab5_calendarservice/index.php/consumer/oauthreg";
+		$calendarURL .= "&scope=https://www.googleapis.com/auth/calendar";
+		$calendarURL .= "&access_type=offline";
+		redirect(urlencode($calendarURL), 'location');
 	}
 }
 
