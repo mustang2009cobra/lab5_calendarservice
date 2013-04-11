@@ -41,7 +41,7 @@ class Consumer extends CI_Controller {
         );
 
         //Update info in DB
-        $this->load->model('users');
+        $this->load->model('users_model');
         $this->users_model->update_google_info($googleData);
 
         //Update logged in user
