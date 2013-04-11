@@ -20,7 +20,7 @@ class Consumer extends CI_Controller {
 
         //REQUEST ACCESS_TOKEN FROM FOURSQUARE
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, "http://accounts.google.com/o/oauth2/token");
+        curl_setopt($ch, CURLOPT_URL, "https://accounts.google.com/o/oauth2/token");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($requestPostData));
