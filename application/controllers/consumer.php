@@ -33,11 +33,26 @@ class Consumer extends CI_Controller {
         $expires_in = $retData['expires_in'];
         $refresh_token = $retData['refresh_token'];
 
-        var_dump($access_token);
-        var_dump($token_type);
-        var_dump($expires_in);
-        var_dump($refresh_token);
-        die();
+        $googleData = array(
+        	'googleAccessToken' => $access_token,
+        	'googleRefreshToken' => $refresh_token,
+        	'googleTokenType' => $token_type,
+        	'googleExpiresIn' => $expires_in
+        );
+
+        //Update info in DB
+        $this->load->model('users');
+        $this->users_model->update_google_info($googleData);
+
+        //Update logged in user
+        $user = $this->session->userdata('user');
+        $user->googleAccessToken = $accessToken;
+        $user->googleRefreshToken = $refresh_token;
+        $user->googleTokenType = $token_type;
+        $user->googleExpiresIn = $expires_in;
+        $this->session->set_userdata('user', $user);
+
+        redirect(site_Url("dashboard/main?error=false"), 'location');
 	}
 
 }

@@ -40,6 +40,15 @@ class Users_model extends CI_Model {
         }
 	}
 
+	public function update_google_info($googleData){
+		$user = $this->session->userdata('user');
+
+		$this->db->where('id', $user->id);
+		$result = $this->db->update('users', $googleData);
+
+		return $result;
+	}
+
     private function set_user_session($user){
         $this->session->set_userdata('user', $user);
     }

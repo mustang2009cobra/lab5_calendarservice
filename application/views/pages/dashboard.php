@@ -85,7 +85,7 @@ if(!$user){
 //PAGE HELPER FUNCTIONS
 
 function renderGoogleAPIAuthSection(){
-    if(isset($user->apiToken)){
+    if(isset($user->googleAccessToken)){
         echo "<p>You're connected to Google Calendar!</p>";
     }
     else{
