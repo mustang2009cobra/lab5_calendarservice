@@ -49,6 +49,7 @@ if(!$user){
 		<div class="span2"></div>
 		<div class="span8">
             <p>Test Content - More to come later</p>
+            <p>Test Commit Line</p>
 		</div>
 		<div class="span2"></div>
 	</div>
