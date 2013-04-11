@@ -50,6 +50,7 @@ if(!$user){
 		<div class="span8">
             <p>Test Content - More to come later</p>
             <p>Test Commit Line</p>
+            <?php renderGoogleAPIAuthSection(); ?>
 		</div>
 		<div class="span2"></div>
 	</div>
@@ -82,5 +83,21 @@ if(!$user){
 
 <?php
 //PAGE HELPER FUNCTIONS
+
+function renderGoogleAPIAuthSection(){
+    if(isset($user->apiToken)){
+        echo "<p>You're connected to Google Calendar!</p>";
+    }
+    else{
+        echo validation_errors();
+        echo form_open('users/connect_to_google_calendar');
+        ?>
+        <fieldset>
+            <button type="submit" name="submitRequest" class="btn btn-primary">Connect To Calendar</button>
+        </fieldset>
+        </form>
+        <?php
+    }
+}
 
 ?>

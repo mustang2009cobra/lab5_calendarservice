@@ -42,6 +42,11 @@ class Users extends CI_Controller {
 			throw new Exception("Could not create user");
 		}
 	}
+
+	public function connect_to_google_calendar(){
+		$calendarURL = "https://accounts.google.com/o/oauth2/auth";
+		redirect($calendarURL, 'location');
+	}
 }
 
 /* End of file uesrs.php */
