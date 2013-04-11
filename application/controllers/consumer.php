@@ -46,7 +46,7 @@ class Consumer extends CI_Controller {
 
         //Update logged in user
         $user = $this->session->userdata('user');
-        $user->googleAccessToken = $accessToken;
+        $user->googleAccessToken = $access_token;
         $user->googleRefreshToken = $refresh_token;
         $user->googleTokenType = $token_type;
         $user->googleExpiresIn = $expires_in;
