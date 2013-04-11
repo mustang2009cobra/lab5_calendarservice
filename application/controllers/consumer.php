@@ -1,6 +1,6 @@
 <?php
 
-class Dashboard extends CI_Controller {
+class Consumer extends CI_Controller {
 	
 	/**
 	 * Main entry page for user dashboard
