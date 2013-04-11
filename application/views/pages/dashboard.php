@@ -27,7 +27,7 @@ if(!$user){
     <div id="error" style="display:none;">
         <?php
         if(isset($_GET['error'])) {
-            echo "error";
+            echo $_GET['error'];
         }
         ?>
     </div>
@@ -59,8 +59,11 @@ if(!$user){
 <script type="text/javascript">
     $(document).ready(function(){
         var error = $("#error").html().trim();
-        if(error == "error"){
+        if(error == "true"){
             showErrorAlert("Unknown Error");
+        }
+        else{
+            showSuccessAlert("Success!")
         }
     });
 
