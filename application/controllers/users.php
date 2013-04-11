@@ -50,7 +50,7 @@ class Users extends CI_Controller {
 		$calendarURL .= "&redirect_uri=http://ec2-54-225-94-113.compute-1.amazonaws.com/lab5_calendarservice/index.php/consumer/oauthreg";
 		$calendarURL .= "&scope=https://www.googleapis.com/auth/calendar";
 		$calendarURL .= "&access_type=offline";
-		redirect(urlencode($calendarURL), 'location');
+		redirect($calendarURL, 'location');
 	}
 }
 
