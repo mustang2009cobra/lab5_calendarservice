@@ -48,7 +48,7 @@ if(!$user){
 	<div class="row">
 		<div class="span2"></div>
 		<div class="span8">
-            <p>Hello!</p>
+            <p>Test Content - More to come later</p>
 		</div>
 		<div class="span2"></div>
 	</div>
