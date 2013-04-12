@@ -29,15 +29,8 @@ $users = get_db_users($conn);
 foreach($users as $user){
 	//Make call to Google API
 	$access_token = $user['googleAccessToken'];
-	$ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, "https://www.googleapis.com/calendar/v3/users/me/calendarList/?access_token=$access_token");
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-type: application/json'));
-    $output = curl_exec($ch);
-    curl_close($ch);
-
-    $retData = json_decode($output);
-    var_dump($retData);
+	$calendars = make_curl_call("https://www.googleapis.com/calendar/v3/users/me/calendarList/", "GET", array('access_token' => $access_token));	
+	var_dump($calendars);
 }
 
 
@@ -53,6 +46,29 @@ function get_db_users($conn){
 		$users[] = $row;
 	}
 	return $users;
+}
+
+function make_curl_call($url, $type, $params){
+	if($type == "GET"){
+		//Set Params on URL
+		if(count($params) > 0){
+			$url .= "?";
+			$url .= http_build_query($params);
+		}
+
+		$ch = curl_init();
+	    curl_setopt($ch, CURLOPT_URL, $url);
+	    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	    curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-type: application/json'));
+	    $output = curl_exec($ch);
+	    curl_close($ch);
+
+	    $retData = json_decode($output);
+	    return $retData;
+	}
+	else{
+		throw new Exception("Method Type Not Allowed");
+	}
 }
 
 
