@@ -18,7 +18,23 @@ $connectionParams = array(
 );
 $conn = \Doctrine\DBAL\DriverManager::getConnection($connectionParams, $config);
 
-//Script goes here
+$users = get_db_users($conn);
+var_dump($users);
+
+
+////////////////////////////////////
+//SCRIPT FUNCTIONS
+////////////////////////////////////
+function get_db_users($conn){
+	$usersSql = "select * from users";
+	$stmt = $conn->query($usersSql);
+
+	$users = array();
+	while($row = $stmt->fetch()){
+		$users[] = $row;
+	}
+	return $users;
+}
 
 
 ?>
