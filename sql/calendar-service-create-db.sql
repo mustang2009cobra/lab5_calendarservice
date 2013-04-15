@@ -26,7 +26,7 @@ CREATE TABLE `calendars` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `userId` int(11) NOT NULL,
   `googleId` varchar(256) NOT NULL,
-  `summary` varchar(256) NOT NULL,
+  `summary` varchar(512) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1$$
 
@@ -34,7 +34,15 @@ delimiter $$
 
 CREATE TABLE `events` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `userId` int(11) NOT NULL,
   `calendarId` int(11) NOT NULL,
   `googleId` varchar(256) NOT NULL,
+  `summary` varchar(512) NOT NULL,
+  `htmlLink` varchar(512),
+  `created` varchar(128) NOT NULL,
+  `updated` varchar(128) NOT NULL,
+  `start` varchar(128) NOT NULL,
+  `end` varchar(128) NOT NULL,
+  `iCalUID` varchar(512) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1$$

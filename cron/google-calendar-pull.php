@@ -38,16 +38,10 @@ foreach($users as $user){
 	foreach($calendars as $calendar){
 		$calendarId = $calendar['id'];
 		$result = make_curl_call("https://www.googleapis.com/calendar/v3/calendars/$calendarId/events/", "GET", array('access_token' => $access_token));
-		var_dump("JEKR");
-		var_dump($result);
+		$events = $result['items'];
 
-		//Get events for the calendar
-		
-
-		//Store events in MySQL DB
-		//update_db_events($events, $calendar, $user);	
+		update_db_events($conn, $events, $calendar, $user);	
 	}
-	die();
 }
 
 /**
@@ -91,6 +85,35 @@ function update_db_calendars($conn, $calendars, $user){
 				'userId' => $user['id'],
 				'googleId' => $calendar['id'],
 				'summary' => $calendar['summary']
+			));
+		}
+	}
+}
+
+function update_db_events($conn, $events, $calendar, $user){
+	$eventsSql = "select * from events";
+	$stmt = $conn->query($eventsSql);
+
+	$existingEvents = array();
+	while($row = $stmt->fetch()){
+		$eventGoogleId = $row['googleId'];
+		$existingEvents[$eventGoogleId] = $row;
+	}
+
+	foreach($events as $event){
+		$newEventGoogleId = $event['id'];
+		if(!isset($existingEvents[$newEventGoogleId])){
+			$conn->insert('events', array(
+				'userId' => $user['id'],
+				'calendarId' => $calendar['id'],
+				'googleId' => $event['id'],
+				'summary' => $event['summary'],
+				'htmlLink' => $event['htmlLink'],
+				'created' => $event['created'],
+				'updated' => $event['updated'],
+				'start' => $event['start']['dateTime'],
+				'end' => $event['end']['dateTime'],
+				'iCalUID' => $event['iCalUID']
 			));
 		}
 	}
