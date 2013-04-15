@@ -30,7 +30,7 @@ foreach($users as $user){
 	//Make call to Google API
 	$access_token = $user['googleAccessToken'];
 	$result = make_curl_call("https://www.googleapis.com/calendar/v3/users/me/calendarList/", "GET", array('access_token' => $access_token));	
-	$calendars = $result['items'];
+	$calendars = $result->items;
 
 	//Store calendars in MySQL DB
 	update_db_calendars($conn, $calendars, $user);
