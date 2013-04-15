@@ -108,7 +108,7 @@ function update_db_events($conn, $events, $calendar, $user){
 			$allDayEvent = false;
 			$start = $event['start'];
 			$end = $event['end'];
-			if(!isset($event['start']['datetime'])){
+			if(!isset($event['start']['dateTime'])){
 				$allDayEvent = true;
 				$start = $start['date'];
 				$end = $end['date'];
