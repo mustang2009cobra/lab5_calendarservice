@@ -36,11 +36,18 @@ foreach($users as $user){
 	update_db_calendars($conn, $calendars, $user);
 
 	foreach($calendars as $calendar){
+		$calendarId = $calendar['id'];
+		$result = make_curl_call("https://www.googleapis.com/calendar/v3/calendars/$calendarId/events/", "GET", array('access_token' => $access_token));
+		var_dump("JEKR");
+		var_dump($result);
+
 		//Get events for the calendar
 		
+
 		//Store events in MySQL DB
 		//update_db_events($events, $calendar, $user);	
 	}
+	die();
 }
 
 /**
