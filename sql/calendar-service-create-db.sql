@@ -13,6 +13,7 @@ CREATE TABLE `users` (
   `name` varchar(128) NOT NULL,
   `email` varchar(128) NOT NULL,
   `password` varchar(128) NOT NULL,
+  `signalESL` varchar(512) NOT NULL,
   `googleAccessToken` varchar(256),
   `googleRefreshToken` varchar(256),
   `googleExpiresIn` varchar(128),

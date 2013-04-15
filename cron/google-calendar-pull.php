@@ -47,7 +47,11 @@ foreach($users as $user){
 /**
  * Go through events in DB and notify users of upcoming
  */
-
+$events = get_db_events($conn);
+foreach($events as $event){
+	//Determine whether to notify or not
+	
+}
 
 
 
@@ -63,6 +67,17 @@ function get_db_users($conn){
 		$users[] = $row;
 	}
 	return $users;
+}
+
+function get_db_events($conn){
+	$eventsSql = "select * from events";
+	$stmt = $conn->query($eventsSql);
+
+	$events = array();
+	while($row = $stmt->fetch()){
+		$users[] = $row;
+	}
+	return $events;
 }
 
 function update_db_calendars($conn, $calendars, $user){
@@ -147,6 +162,7 @@ function make_curl_call($url, $type, $params){
 		$ch = curl_init();
 	    curl_setopt($ch, CURLOPT_URL, $url);
 	    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 	    curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-type: application/json'));
 	    $output = curl_exec($ch);
 	    curl_close($ch);
@@ -154,8 +170,20 @@ function make_curl_call($url, $type, $params){
 	    $retData = json_decode($output, TRUE);
 	    return $retData;
 	}
+	else if($type == "POST"){
+		$ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($params));
+        curl_setopt($ch, CURLOPT_POST, 1);
+        $output = curl_exec($ch);
+        curl_close($ch);
+        
+        return $output;
+	}
 	else{
-		throw new Exception("Method Type Not Allowed");
+		throw new Exception("Method type not allowed");
 	}
 }
 

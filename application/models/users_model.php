@@ -11,7 +11,8 @@ class Users_model extends CI_Model {
 		$data = array(
 			'email' => $formData['createUserEmail'],
 			'name' => $formData['createUserName'],
-			'password' => $formData['createUserPassword']
+			'password' => $formData['createUserPassword'],
+			'signalESL' => $formData['createUserSignalESL']
 		);
 		
 		$result = $this->db->insert('users', $data);
