@@ -50,7 +50,14 @@ foreach($users as $user){
 $events = get_db_events($conn);
 foreach($events as $event){
 	//Determine whether to notify or not
-	
+	$eventName = $event['summary'];
+	$start = $event['start'];
+	$startTimestamp = strtotime($start);
+	$end = $event['end'];
+	$endTimestamp = strtotime($end);
+	echo "Event name: $eventName\n";
+	echo "Start date for event: $start. Translates to timestamp: $startTimestamp\n";
+	echo "End date for event: $end. Translates to timestamp: $endTimestamp\n\n";
 }
 
 
