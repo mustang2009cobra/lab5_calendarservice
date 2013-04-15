@@ -29,8 +29,9 @@ $users = get_db_users($conn);
 foreach($users as $user){
 	//Make call to Google API
 	$access_token = $user['googleAccessToken'];
-	$calendars = make_curl_call("https://www.googleapis.com/calendar/v3/users/me/calendarList/", "GET", array('access_token' => $access_token));	
-	
+	$result = make_curl_call("https://www.googleapis.com/calendar/v3/users/me/calendarList/", "GET", array('access_token' => $access_token));	
+	$calendars = $result['items'];
+
 	//Store calendars in MySQL DB
 	update_db_calendars($conn, $calendars, $user);
 
@@ -78,9 +79,6 @@ function update_db_calendars($conn, $calendars, $user){
 	foreach($calendars as $calendar){
 		$newCalGoogleId = $calendar['id'];
 		if(!isset($existingCalendars[$newCalGoogleId])){
-			var_dump($calendar);
-			var_dump($user);
-			die();
 			//Add new calendar to DB
 			$conn->insert('calendars', array(
 				'userId' => $user['id'],
