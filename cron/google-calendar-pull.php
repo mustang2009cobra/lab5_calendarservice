@@ -78,6 +78,9 @@ function update_db_calendars($conn, $calendars, $user){
 	foreach($calendars as $calendar){
 		$newCalGoogleId = $calendar['id'];
 		if(!isset($existingCalendars[$newCalGoogleId])){
+			var_dump($calendar);
+			var_dump($user);
+			die();
 			//Add new calendar to DB
 			$conn->insert('calendars', array(
 				'userId' => $user['id'],
