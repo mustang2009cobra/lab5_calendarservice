@@ -49,15 +49,36 @@ foreach($users as $user){
  */
 $events = get_db_events($conn);
 foreach($events as $event){
-	//Determine whether to notify or not
-	$eventName = $event['summary'];
-	$start = $event['start'];
-	$startTimestamp = strtotime($start);
-	$end = $event['end'];
-	$endTimestamp = strtotime($end);
-	echo "Event name: $eventName\n";
-	echo "Start date for event: $start. Translates to timestamp: $startTimestamp\n";
-	echo "End date for event: $end. Translates to timestamp: $endTimestamp\n\n";
+	if($event['notified'] == 1){
+		continue;
+	}
+
+	if($event['allDayEvent'] == 0){ //If all-day event
+		$startTimestamp = strtotime($event['start']); //Get timestamp for date
+		if($startTimestamp > time()){
+			if(($startTimestamp - time()) < 86400){ //Event is less than one day away
+				echo "Notifying event\n";
+				$summary = $event['summary'];
+				echo "  Summary: $summary\n";
+				//Notify event
+			}
+		}
+	}
+	else if($event['allDayEvent'] == 1){
+		$startTimestamp = strtotime($event['start']);
+		if($startTimestamp > time()){
+			if(($startTimestamp - time()) < 300 ){
+				echo "Notifying event\n";
+				$summary = $event['summary'];
+				echo "  Summary: $summary\n";
+				//Notify event
+			}
+		}
+	}
+	else{
+		echo "WARNING: Event is not designated as all-day or not";
+	}
+	
 }
 
 
@@ -82,7 +103,7 @@ function get_db_events($conn){
 
 	$events = array();
 	while($row = $stmt->fetch()){
-		$users[] = $row;
+		$events[] = $row;
 	}
 	return $events;
 }
@@ -127,11 +148,11 @@ function update_db_events($conn, $events, $calendar, $user){
 		if(!isset($existingEvents[$newEventGoogleId])){
 
 			//Figure out whether event is all-day or not
-			$allDayEvent = false;
+			$allDayEvent = 0;
 			$start = $event['start'];
 			$end = $event['end'];
 			if(!isset($event['start']['dateTime'])){
-				$allDayEvent = true;
+				$allDayEvent = 1;
 				$start = $start['date'];
 				$end = $end['date'];
 			}
@@ -152,7 +173,8 @@ function update_db_events($conn, $events, $calendar, $user){
 				'start' => $start,
 				'end' => $end,
 				'allDayEvent' => $allDayEvent,
-				'iCalUID' => $event['iCalUID']
+				'iCalUID' => $event['iCalUID'],
+				'notified' => 0
 			));
 		}
 	}
