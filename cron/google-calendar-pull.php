@@ -103,6 +103,22 @@ function update_db_events($conn, $events, $calendar, $user){
 	foreach($events as $event){
 		$newEventGoogleId = $event['id'];
 		if(!isset($existingEvents[$newEventGoogleId])){
+
+			//Figure out whether event is all-day or not
+			$allDayEvent = false;
+			$start = $event['start'];
+			$end = $event['end'];
+			if(!isset($event['start']['datetime'])){
+				$allDayEvent = true;
+				$start = $start['date'];
+				$end = $end['date'];
+			}
+			else{
+				$start = $start['dateTime'];
+				$end = $end['dateTime'];
+			}
+
+			//Insert event into database
 			$conn->insert('events', array(
 				'userId' => $user['id'],
 				'calendarId' => $calendar['id'],
@@ -111,8 +127,9 @@ function update_db_events($conn, $events, $calendar, $user){
 				'htmlLink' => $event['htmlLink'],
 				'created' => $event['created'],
 				'updated' => $event['updated'],
-				'start' => $event['start']['dateTime'],
-				'end' => $event['end']['dateTime'],
+				'start' => $start,
+				'end' => $end,
+				'allDayEvent' => $allDayEvent,
 				'iCalUID' => $event['iCalUID']
 			));
 		}

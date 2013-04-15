@@ -43,6 +43,7 @@ CREATE TABLE `events` (
   `updated` varchar(128) NOT NULL,
   `start` varchar(128) NOT NULL,
   `end` varchar(128) NOT NULL,
+  `allDayEvent` tinyint(1) NOT NULL,
   `iCalUID` varchar(512) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1$$
