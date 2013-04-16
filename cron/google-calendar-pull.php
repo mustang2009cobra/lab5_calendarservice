@@ -132,7 +132,7 @@ function get_db_user($conn, $id){
 
 function get_db_calendar($conn, $id){
 	$calendarsSql = "select * from calendars where id = $id";
-	$stmt = $conn->query($calendarSql);
+	$stmt = $conn->query($calendarsSql);
 
 	$calendars = array();
 	while($row = $stmt->fetch()){
