@@ -53,12 +53,9 @@ foreach($events as $event){
 		continue;
 	}
 
-	$user = get_db_user($conn, $event['userId']);
-	$calendar = get_db_calendar($conn, $event['calendarId']);
+	//$user = get_db_user($conn, $event['userId']);
+	//$calendar = get_db_calendar($conn, $event['calendarId']);
 
-	var_dump($user);
-	var_dump($calendar);
-	die();
 	if($event['allDayEvent'] == 0){ //If all-day event
 		$startTimestamp = strtotime($event['start']); //Get timestamp for date
 		if($startTimestamp > time()){
@@ -199,8 +196,6 @@ function update_db_events($conn, $events, $calendar, $user){
 			}
 
 			//Insert event into database
-			var_dump("JKER");
-			var_dump($calendar['id']);
 			$conn->insert('events', array(
 				'userId' => $user['id'],
 				'calendarId' => $calendar['id'],
