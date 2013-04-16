@@ -53,22 +53,25 @@ foreach($events as $event){
 		continue;
 	}
 
-	//$user = get_db_user($conn, $event['userId']);
+	$user = get_db_user($conn, $event['userId']);
 	//$calendar = get_db_calendar($conn, $event['calendarId']);
 
 	if($event['allDayEvent'] == 0){ //If all-day event
 		$startTimestamp = strtotime($event['start']); //Get timestamp for date
 		if($startTimestamp > time()){
 			if(($startTimestamp - time()) < 86400){ //Event is less than one day away
-				echo "Notifying event\n";
 				$summary = $event['summary'];
-				echo "  Summary: $summary\n";
+				echo "Notifying event: $summary\n";
 
 				//Update notified in DB
 				set_db_event_notified($conn, $event);
 
 				//Notify event
-				//make_curl_call($event[''], $type, $params);
+				$message = "Event reminder: $summary";
+				make_curl_call($user['signalESL'], "POST", array(
+					'email' => $user['email'],
+					'message' => $message
+				));
 			}
 		}
 	}
@@ -76,10 +79,18 @@ foreach($events as $event){
 		$startTimestamp = strtotime($event['start']);
 		if($startTimestamp > time()){
 			if(($startTimestamp - time()) < 300 ){
-				echo "Notifying event\n";
 				$summary = $event['summary'];
-				echo "  Summary: $summary\n";
+				echo "Notifying event: $summary\n";
+
+				//Update notified in DB
+				set_db_event_notified($conn, $event);
+
 				//Notify event
+				$message = "Event reminder: $summary";
+				make_curl_call($user['signalESL'], "POST", array(
+					'email' => $user['email'],
+					'message' => $message
+				));
 			}
 		}
 	}
