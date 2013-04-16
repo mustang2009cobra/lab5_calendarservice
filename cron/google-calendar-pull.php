@@ -54,7 +54,7 @@ foreach($events as $event){
 	}
 
 	$user = get_db_user($conn, $event['userId']);
-	$calendar = get_db_user($conn, $event['calendarId']);
+	$calendar = get_db_calendar($conn, $event['calendarId']);
 
 	var_dump($user);
 	var_dump($calendar);
