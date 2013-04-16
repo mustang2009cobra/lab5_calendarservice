@@ -53,8 +53,8 @@ foreach($events as $event){
 		continue;
 	}
 
-	$user = get_db_user($event['userId']);
-	$calendar = get_db_user($event['calendarId']);
+	$user = get_db_user($conn, $event['userId']);
+	$calendar = get_db_user($conn, $event['calendarId']);
 
 	var_dump($user);
 	var_dump($calendar);
@@ -71,7 +71,7 @@ foreach($events as $event){
 				set_db_event_notified($conn, $event);
 
 				//Notify event
-				make_curl_call($event[''], $type, $params);
+				//make_curl_call($event[''], $type, $params);
 			}
 		}
 	}
