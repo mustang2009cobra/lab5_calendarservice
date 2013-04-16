@@ -199,6 +199,8 @@ function update_db_events($conn, $events, $calendar, $user){
 			}
 
 			//Insert event into database
+			var_dump("JKER");
+			var_dump($calendar['id']);
 			$conn->insert('events', array(
 				'userId' => $user['id'],
 				'calendarId' => $calendar['id'],
