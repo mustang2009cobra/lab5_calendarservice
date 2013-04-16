@@ -71,7 +71,7 @@ foreach($events as $event){
 				set_db_event_notified($conn, $event);
 
 				//Notify event
-				make_curl_call($event[''], $type, $params)
+				make_curl_call($event[''], $type, $params);
 			}
 		}
 	}
