@@ -53,6 +53,12 @@ foreach($events as $event){
 		continue;
 	}
 
+	$user = get_db_user($event['userId']);
+	$calendar = get_db_user($event['calendarId']);
+
+	var_dump($user);
+	var_dump($calendar);
+	die();
 	if($event['allDayEvent'] == 0){ //If all-day event
 		$startTimestamp = strtotime($event['start']); //Get timestamp for date
 		if($startTimestamp > time()){
@@ -60,7 +66,12 @@ foreach($events as $event){
 				echo "Notifying event\n";
 				$summary = $event['summary'];
 				echo "  Summary: $summary\n";
+
+				//Update notified in DB
+				set_db_event_notified($conn, $event);
+
 				//Notify event
+				make_curl_call($event[''], $type, $params)
 			}
 		}
 	}
@@ -106,6 +117,32 @@ function get_db_events($conn){
 		$events[] = $row;
 	}
 	return $events;
+}
+
+function get_db_user($conn, $id){
+	$usersSql = "select * from users where id = $id";
+	$stmt = $conn->query($usersSql);
+
+	$users = array();
+	while($row = $stmt->fetch()){
+		$users[] = $row;
+	}
+	return $users[0];
+}
+
+function get_db_calendar($conn, $id){
+	$calendarsSql = "select * from calendars where id = $id";
+	$stmt = $conn->query($calendarSql);
+
+	$calendars = array();
+	while($row = $stmt->fetch()){
+		$calendars[] = $row;
+	}
+	return $calendars[0];
+}
+
+function set_db_event_notified($conn, $event){
+	$conn->update('events', array('notified' => 1), array('id' => $event['id']));
 }
 
 function update_db_calendars($conn, $calendars, $user){
